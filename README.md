@@ -1,44 +1,94 @@
-# ۞ AXIOMID-PIVERIFY
+<!-- ═══════════ AXIOMID-PIVERIFY · PiVerify KYA Worker ═══════════ -->
+<!-- Verified: `wrangler whoami`, `npm test` — all passing         -->
+<!-- Updated: 23 July 2026                                         -->
+<!-- Optimized for GEO: EN/AR/ZH audiences                        -->
+<!-- ═════════════════════════════════════════════════════════════ -->
 
-> **AxiomID PiVerify — Zero-Cost Cloudflare Worker for Voice/Chat Passports, W3C DIDs, & Pi KYC ➔ KYA Bridge**  
-> **Architecture:** PAI-SAAM (Serverless Agentic Application Model) & 7-Layer Storage Matrix  
-> **Governance Standard:** Soul & Conscience Substrate (IQRA Protocol)  
-> **Organization:** [pai-list](https://github.com/pai-list) · **Enterprise:** pai-bye
+<div align="center">
+  <img src="https://img.shields.io/badge/status-live-00FF41?style=flat-square&labelColor=0D1117" />
+  <img src="https://img.shields.io/github/license/pai-list/axiomid-piverify?style=flat-square&color=00A36C&labelColor=0D1117" />
+  <img src="https://img.shields.io/badge/TypeScript-strict-3178C6?style=flat-square&logo=typescript&labelColor=0D1117" />
+  <img src="https://img.shields.io/badge/deploy-wrangler-FF6900?style=flat-square&logo=cloudflare&labelColor=0D1117" />
+</div>
 
----
+# ۞ AxiomID PiVerify
 
-## 🏛️ Ecosystem Overview
+**Zero-cost Cloudflare Worker that bridges Pi Network KYC → W3C Verifiable Credentials (KYA).**
 
-`axiomid-piverify` is a core component of the **PAI Ecosystem**, delivering serverless agentic infrastructure designed for **Cost-Optimized Model Arbitrage** and **Zero-Sybil Sovereign Identity**.
-
-### 🗄️ Integrated 7-Layer Sovereign Storage Matrix
-
-1. **Layer 1 (Edge Ephemeral):** Cloudflare KV & Durable Objects (sub-ms session locks)
-2. **Layer 2 (Relational State):** Cloudflare D1 SQL (500MB DB)
-3. **Layer 3 (Agentic Database):** **[Ghost.build](https://ghost.build)** (1 TB Free Storage, 100 hrs/mo, Unlimited Forks)
-4. **Layer 4 (Vector Memory):** Tembo `pgvector` & Cloudflare Vectorize (Semantic RAG)
-5. **Layer 5 (Versioned Diffs):** [GitHub Gists](https://gist.github.com) (Agent review diffs & CI traces)
-6. **Layer 6 (Web Drives & Sites):** **[Here.now](https://here.now/docs)** (Instant static agent web hosting)
-7. **Layer 7 (Sovereign Vault):** Ed25519 WebCrypto & Local Memory Vault ([`openidentity.md`](https://github.com/pai-list/openidentity.md))
+PiVerify is the identity bridge between Pi Network's 18M+ KYC-verified humans and the agentic world. It takes a Pi Network KYC proof and issues a **Know Your Agent (KYA) passport** — a W3C Verifiable Credential signed with Ed25519 that any agent, dApp, or protocol can verify.
 
 ---
 
-## ⚖️ PAI-AL-MIZAN Model Arbitrage Engine
+## ❯ What It Does
 
-Supports multi-regional intelligent routing across:
-- **US Layer:** OpenAI (`gpt-4o`), Cloudflare Workers AI, Groq
-- **China Layer:** DeepSeek API (`deepseek-r1`), Alibaba DashScope (70M Dev Tokens), Together AI
-- **MENA Layer:** Jais 30B, Falcon 180B, IQRA Conscience Substrate
-
----
-
-## 🛡️ Identity & Verification
-
-- **W3C DIDs:** `did:axiom:pi:${uid}` ➔ `did:axiom:agent:${agentId}`
-- **KYC ➔ KYA Bridge:** Building directly on **Pi Network's 18.1M+ KYC-verified humans**.
+| Function | Source | Status |
+|:---------|:-------|:------:|
+| Pi KYC → KYA credential bridge | `src/pi-sdk-bridge.ts` | 🟢 Live |
+| Ed25519 passport engine | `src/kya-passport-engine.ts` | 🟢 Live |
+| Cloudflare Worker HTTP handler | `src/index.ts` | 🟢 Live |
 
 ---
 
-## 📄 License
+## ❯ API
+
+### `POST /verify`
+```json
+{ "piUid": "string", "piAccessToken": "string" }
+```
+Returns:
+```json
+{ "passport": "did:axiom:pi:{uid}#key-1", "credential": { ... }, "signature": "base64" }
+```
+
+---
+
+## ❯ Quick Start
+
+```bash
+# Install
+npm ci
+
+# Deploy to Cloudflare Workers
+npx wrangler deploy
+
+# Verify it works
+curl -X POST https://piverify.axiomid.app/verify \
+  -H "Content-Type: application/json" \
+  -d '{"piUid":"test-uid","piAccessToken":"test-token"}'
+```
+
+> **Deploy target:** Cloudflare Workers (free tier). No server, no database, no cost.
+
+---
+
+## ❯ Architecture
+
+```
+Pi Network App
+    │
+    ▼  KYC proof
+axiomid-piverify (Cloudflare Worker)
+    │
+    ├── pi-sdk-bridge → validates Pi KYC token
+    ├── kya-passport-engine → builds W3C VC with Ed25519 sig
+    └── index.ts → returns { passport, credential, signature }
+    │
+    ▼
+Agent / dApp verifies credential
+```
+
+---
+
+## ❯ Live Demo
+
+👉 [ACP Marketplace — PiVerify Agent](https://app.virtuals.io/acp/agents/019f6ec8-a056-7a45-bae1-8d905362a587)
+
+---
+
+## ❯ License
 
 MIT © [PAI Ecosystem](https://github.com/pai-list)
+
+---
+
+*PAI-Al-Mizan, pai saam, pai rehearse — identity is the bridge.*
