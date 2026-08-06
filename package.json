@@ -1,15 +1,15 @@
 {
   "name": "axiomid-piverify",
   "version": "1.0.0",
-  "type": "module",
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260724.1",
+    "typescript": "^5",
+    "wrangler": "^4.113.0"
+  },
   "scripts": {
-    "dev": "wrangler dev",
     "deploy": "wrangler deploy",
+    "dev": "wrangler dev",
     "types": "wrangler types"
   },
-  "devDependencies": {
-    "@cloudflare/workers-types": "^5.20260722.1",
-    "typescript": "^5.7.0",
-    "wrangler": "^4.113.0"
-  }
+  "type": "module"
 }
